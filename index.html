@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!--set the viewport-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--link to bootstrap CDN, just in case -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <!--ends head section for now-->
+    <!--http://danielstern.ca/range.css/?ref=css-tricks#/-->
+    <!--above link is the page I got the slider changes from-->
+    <link rel="stylesheet" href="range.css">
+    <!--my style sheet-->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 col-lg-2 controls">
+                <h2 id="colorHider">Color</h2>
+                <hr>
+                <div class="colorBox">
+                    <label for="colorPreview">Color Preview</label>
+                    <div id="colorPreview"></div>
+                    <hr>
+                </div>
+                <div class="colorSelector">
+                    <label for="red">Red Value</label>
+                    <input type="range" step="1" value="50" max="255" id="red">
+                    <hr>
+                    <label for="green">Green Value</label>
+                    <input type="range" step="1" value="50" max="255" id="green">
+                    <hr>
+                    <label for="blue">Blue Value</label>
+                    <input type="range" step="1" value="50" max="255" id="blue">
+                    <hr>
+                    <label for="alpha">Alpha Value</label>
+                    <input type="range" step="0.05" value="1" min="0.1" max="1" id="alpha">
+                    <hr>
+                    <button id="randomize">Randomize</button>
+                </div>
+            </div>
+            <!--ends controls div-->
+            <div class="col-md-10 col-lg-8 paintCanvas">
+                <canvas id="paintSurface"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- Added link to the jQuery Library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="basiclogic.js"></script>
+</body>
