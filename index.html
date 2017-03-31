@@ -40,6 +40,13 @@
                     <input type="range" step="0.05" value="1" min="0.1" max="1" id="alpha">
                     <hr>
                     <button id="randomize">Randomize</button>
+                    <hr>
+                    <select>
+                        <option value="global">Global Blur</option>
+                        <option value="local">Local Blur</option>
+                    </select>
+                    <label for="pixelate">Pixelator Value</label>
+                    <input type="range" step="1" value="0" max="80" id="pixelate">
                 </div>
             </div>
             <!--ends controls div-->
@@ -47,6 +54,7 @@
                 <canvas id="paintSurface"></canvas>
             </div>
         </div>
+        <button id="reset">RESET</button>
     </div>
     <!-- Added link to the jQuery Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

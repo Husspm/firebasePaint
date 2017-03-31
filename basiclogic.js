@@ -1,15 +1,14 @@
 var colors = { mode: "rgba(", red: "50,", green: "50,", blue: "50,", alpha: "1)" };
+var blurAmount = 0;
 //slider controls from custom colors
-$("input[type='range']").mousemove(function() {
-    var tint = this.id;
-    var shade;
-    if (tint === "alpha") {
-        shade = this.value + ")";
+$("input[type='range']").on("input", function() {
+    if (this.id === "alpha") {
+        colors[this.id] = this.value + ")";
+    } else if (this.id === "pixelate") {
+        blurAmount = this.value;
     } else {
-        shade = this.value + ",";
+        colors[this.id] = this.value + ",";
     }
-    colors[tint] = shade;
-    console.log(colors);
     //dipslays current color in preview window
     $("#colorPreview").css("background-color", colors.mode + colors.red + colors.green + colors.blue + colors.alpha);
 }); //ends slider function
@@ -37,12 +36,25 @@ var ctx = canvas.getContext("2d");
 console.log(ctx);
 ctx.canvas.height = 600;
 ctx.canvas.width = 800;
-ctx.filter = "blur(50px)";
+ctx.canvas.style.filter = "brightness(200%)";
+$("#reset").click(function() {
+    canvas = document.getElementById("paintSurface");
+    ctx = canvas.getContext("2d");
+    console.log(ctx);
+    ctx.canvas.height = 600;
+    ctx.canvas.width = 800;
+    ctx.canvas.style.filter = "brightness(200%)";
+});
 $("#paintSurface").mousemove(function(event) {
+    ctx.filter = "blur(" + blurAmount + "px)";
+    posX = event.clientX - $(event.target).offset().left;
+    posY = event.clientY - $(event.target).offset().top;
     ctx.beginPath();
-    ctx.moveTo(event.clientX - $(event.target).offset().left, event.clientY - $(event.target).offset().top);
-    ctx.lineTo(event.clientX - $(event.target).offset().left + 5, event.clientY - $(event.target).offset().top + 5);
-    ctx.lineWidth = 20;
+    ctx.moveTo(posX, posY);
+    ctx.arc(posX, posY, 40, 0, 2 * Math.PI);
     ctx.strokeStyle = colors.mode + colors.red + colors.green + colors.blue + colors.alpha;
+    ctx.fillStyle = "rgba(0,0,0, 0.6)";
+    ctx.fill();
     ctx.stroke();
+
 });
