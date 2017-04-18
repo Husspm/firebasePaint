@@ -21,9 +21,15 @@
             <div class="col-md-2 col-lg-2 controls">
                 <h2 id="colorHider">Color</h2>
                 <hr>
+                <select>
+                        <option value = 0>Outer Color</option>
+                        <option value = 1>Inner Color</option>
+                    </select>
                 <div class="colorBox">
+
                     <label for="colorPreview">Color Preview</label>
-                    <div id="colorPreview"></div>
+                    <div id="colorPreview">
+                    </div>
                     <hr>
                 </div>
                 <div class="colorSelector">
@@ -37,26 +43,27 @@
                     <input type="range" step="1" value="50" max="255" id="blue">
                     <hr>
                     <label for="alpha">Alpha Value</label>
-                    <input type="range" step="0.05" value="1" min="0.1" max="1" id="alpha">
+                    <input type="range" step="0.05" value="1" min="0" max="1" id="alpha">
                     <hr>
                     <button id="randomize">Randomize</button>
                     <hr>
-                    <select>
-                        <option value="global">Global Blur</option>
-                        <option value="local">Local Blur</option>
-                    </select>
+
                     <label for="pixelate">Pixelator Value</label>
                     <input type="range" step="1" value="0" max="80" id="pixelate">
+                    <button id="reset">RESET</button>
                 </div>
             </div>
             <!--ends controls div-->
             <div class="col-md-10 col-lg-8 paintCanvas">
+                <div class="topLayer">
+
+                </div>
                 <canvas id="paintSurface"></canvas>
+                <img id="canvasImg" alt="">
             </div>
         </div>
-        <button id="reset">RESET</button>
     </div>
     <!-- Added link to the jQuery Library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="basiclogic.js"></script>
+    <script src="test2.js"></script>
 </body>

@@ -1,3 +1,9 @@
+body,
+html {
+    height: 100%;
+    width: 100%;
+}
+
 .controls {
     color: white;
     padding: 10px;
@@ -15,11 +21,18 @@
 
 #colorPreview {
     box-shadow: 0 0 0 1px white;
-    border: 1px solid black;
+    border: 8px solid rgb( 250, 250, 250);
     margin: 0 auto;
     height: 60px;
     width: 60px;
     background-color: rgb( 50, 50, 50);
+}
+
+#fillPreview {
+    position: relative;
+    margin: 5px auto;
+    height: 50px;
+    width: 50px;
 }
 
 .colorSelector>label:nth-child(1) {
@@ -42,10 +55,25 @@ label:nth-child(7) {
     cursor: pointer;
 }
 
+.topLayer {
+    text-align: center;
+    color: black;
+    position: absolute;
+    z-index: 10;
+    background-size: 200px;
+    width: 803.2px;
+    height: 703.2px;
+    opacity: 0.85;
+}
+
 #paintSurface {
     border: 2px solid rgb( 50, 50, 50);
 }
 
 select {
     color: black;
+}
+
+img {
+    filter: contrast(100%);
 }
