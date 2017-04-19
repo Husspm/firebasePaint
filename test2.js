@@ -52,12 +52,18 @@ ctx.canvas.style.filter = "contrast(" + brightnessAmount + "%)";
 ctx.globalCompositeOperation = 'destination-over';
 $("#reset").click(function() {
     totalCircles = [];
+    blurAmount = 0;
+    width = 1800;
+    height = 1600;
+    positionX = 0;
+    positionY = 0;
     runCheck();
     canvas = document.getElementById("paintSurface");
     ctx = canvas.getContext("2d");
     ctx.canvas.height = height;
     ctx.canvas.width = width;
     ctx.filter = "contrast(" + brightnessAmount + "%)";
+    //ctx.globalCompositeOperation = 'destination-over';
 });
 
 var blurAmount = 0;
@@ -91,62 +97,62 @@ function keepTrack(max) {
     }
 
 }
-var positionX = 0;
-var positionY = 0;
+var positionX = width / 2;
+var positionY = height / 2;
 
-var blurAmount = 35;
+var blurAmount = 0;
+
 
 function computerMakeArt() {
+    linewidth = RDM(50);
     running = true;
-    keepTrack(1200);
+    keepTrack(1600);
     if (totalCircles.length % frameRate === 0) {
         //randomizer();
-        positionX = RDM(width);
-        positionY = RDM(height);
+        //positionX = RDM(width);
+        //positionY = RDM(height);
         //if (clrIdx === 0) {
         //    clrIdx = 1;
         //} else {
         //    clrIdx = 0;
         //}
     }
-    //if (totalCircles.length > 500 === 0) {
-    //    blurAmount = 0;
-    //} else {
-    //    blurAmount = 0;
-    //}
-    blurAmount = RDM(20);
-    var circle = new Circle(RDM(width), RDM(height), RDM(600), RDM(2) * Math.PI);
+    positionX += 5;
+    positionY += 40;
+    var circle = new Circle(RDM(width), RDM(height), RDM(60), RDM(2) * Math.PI);
     var circumX = positionX + circle.radius * Math.cos(circle.angle);
     var circumY = positionY + circle.radius * Math.sin(circle.angle);
     circle.save();
     ctx.beginPath();
     randomX = RDM(width);
     randomY = RDM(height);
-    ctx.lineWidth = RDM(2);
+    ctx.lineWidth = linewidth;
     ctx.moveTo(width / 2, height);
     ctx.quadraticCurveTo(RDM(width), RDM(height), randomX, randomY);
     ctx.stroke();
     ctx.moveTo(randomX, randomY);
     randomX = RDM(width);
     randomY = RDM(height);
-    ctx.lineWidth = RDM(2);
+    ctx.lineWidth = linewidth * 4;
     ctx.quadraticCurveTo(RDM(width), RDM(height), randomX, randomY);
     ctx.stroke();
     ctx.moveTo(randomX, randomY);
     randomX = RDM(width);
     randomY = RDM(height);
     ctx.quadraticCurveTo(RDM(width), RDM(height), randomX, randomY);
+    ctx.moveTo(randomX, randomY);
+    ctx.quadraticCurveTo(RDM(width), RDM(height), (width) += 0.5, height / 2);
     ctx.ellipse(positionX, positionY, circle.radius, circle.radius, 45 * Math.PI / 180, 0, 2 * Math.PI);
     ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
-    ctx.lineWidth = RDM(4);
+    ctx.lineWidth = linewidth;
     var newPoint = RDM(width);
     ctx.moveTo(circumX, circumY);
-    ctx.quadraticCurveTo(newPoint, RDM(height), RDM(width), RDM(height));
+    ctx.quadraticCurveTo(newPoint, RDM(height), width * 0.5, height * 1);
     ctx.stroke();
     ctx.moveTo(circumX, circumY);
-    ctx.quadraticCurveTo(newPoint, RDM(height), RDM(width), 0);
-    ctx.quadraticCurveTo(RDM(width), RDM(height), RDM(width), RDM(height));
-    ctx.lineWidth = RDM(4);
+    ctx.quadraticCurveTo(newPoint, RDM(height), width * 0.25, 0);
+    ctx.quadraticCurveTo(RDM(width), RDM(height), width * 0.25, height += 0.2);
+    ctx.lineWidth = linewidth * 2;
     var angle = Math.PI * RDM(2);
     var angle2 = Math.PI * RDM(2);
     ctx.moveTo(circumX, circumY);
@@ -161,8 +167,8 @@ function computerMakeArt() {
     ctx.stroke();
     ctx.moveTo(0, RDM(height));
     ctx.quadraticCurveTo(newPoint, RDM(height), circumX, circumY);
-    ctx.lineWidth = RDM(2);
-    ctx.filter = "blur(" + (blurAmount - 18) + "px)";
+    ctx.lineWidth = linewidth;
+    ctx.filter = "blur(" + (blurAmount) + "px)";
     ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
     ctx.stroke();
     ctx.closePath();
