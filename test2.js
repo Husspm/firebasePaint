@@ -53,8 +53,8 @@ ctx.globalCompositeOperation = 'destination-over';
 $("#reset").click(function() {
     totalCircles = [];
     blurAmount = 0;
-    width = 1800;
-    height = 1600;
+    width = 800;
+    height = 600;
     positionX = 0;
     positionY = 0;
     runCheck();
@@ -104,7 +104,7 @@ var blurAmount = 0;
 
 
 function computerMakeArt() {
-    linewidth = RDM(50);
+    linewidth = RDM(10);
     running = true;
     keepTrack(1600);
     if (totalCircles.length % frameRate === 0) {
