@@ -68,6 +68,7 @@ label:nth-child(7) {
 
 #paintSurface {
     border: 2px solid rgb( 50, 50, 50);
+    background: black;
 }
 
 select {
