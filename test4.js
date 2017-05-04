@@ -37,7 +37,7 @@ $("#randomize").click(randomizer);
 function randomizer() {
     for (var key in colors[clrIdx]) {
         if (key !== "mode")
-            colors[clrIdx][key] = Math.floor(RDM(256)) - 184 + ",";
+            colors[clrIdx][key] = Math.floor(RDM(256)) + ",";
         if (key === "alpha") {
             newNumber = RDM(1) + 0.4;
             colors[clrIdx][key] = newNumber + ")";
@@ -54,12 +54,13 @@ var brightnessAmount = 250;
 ctx.canvas.height = height;
 ctx.canvas.width = width;
 console.log(ctx);
-ctx.canvas.style.filter = "contrast(" + brightnessAmount + "%)";
 ctx.globalCompositeOperation = 'destination-over';
-$("#reset").click(function() {
+$("#reset").click(reset);
+
+function reset() {
     totalCircles = [];
     iterations = 0;
-    extendAmount = 1.11;
+    extendAmount = 1.04;
     blurAmount = 0;
     initialRadius = 2;
     initialRadius2 = 1;
@@ -69,13 +70,16 @@ $("#reset").click(function() {
     positionX = 0;
     positionY = 0;
     posX = 0;
+    lineWidth = 1;
+    frameRate = 120;
     runCheck();
     canvas = document.getElementById("paintSurface");
     ctx = canvas.getContext("2d");
-    ctx.canvas.height = height;
-    ctx.canvas.width = width;
+    ctx.canvas.height = window.innerHeight + 200;
+    ctx.canvas.width = window.innerWidth;
+    ctx.globalAlpha = 0.6;
     //ctx.globalCompositeOperation = 'destination-over';
-});
+}
 
 var blurAmount = 0;
 var auto = setInterval(function() { computerMakeArt(); }, 1000 / frameRate);
@@ -98,6 +102,7 @@ function keepTrack(max) {
     if (iterations > max) {
         clearInterval(auto);
         runCheck();
+        reset();
         // save canvas image as data url (png format by default)
         var dataURL = canvas.toDataURL();
 
@@ -120,21 +125,28 @@ var TAU = 2 * PI;
 var anglePoints = [0, 0.125 * PI, 0.25 * PI, 0.375 * PI, 0.5 * PI, 0.625 * PI, 0.75 * PI, 0.875 * PI, PI, 1.125 * PI, 1.25 * PI, 1.375 * PI, 1.5 * PI, 1.625 * PI, 1.75 * PI, 1.875 * PI, 2 * PI];
 var initialRadius = 10;
 var iterations = 0;
-var extendAmount = 1.1;
+var extendAmount = 1.02;
+var lineWidth = 1;
+var allow = true;
 
 function computerMakeArt() {
-    keepTrack(360);
+    //keepTrack(166);
     iterations++;
     var circle = new Circle(width / 2, height / 2, newRadius = newRadius * extendAmount);
     var circle3 = new Circle(width / 2, height / 2, circle.radius / 2);
     var circle4 = new Circle(width / 2, height / 2, circle3.radius / 2);
-    if (newRadius > 500) {
-        extendAmount = 1.01;
+    if (iterations % 102 === 0) {
+        newRadius = 3000;
+        extendAmount = 1;
+        extendAmount *= 0.94;
     }
     circle.save();
     circle3.save();
     circle4.save();
     running = true;
+    circle.move();
+    circle3.move();
+    circle4.move();
     if (totalCircles.length % 2 === 0) {
         randomizer();
         if (clrIdx === 0) {
@@ -143,7 +155,7 @@ function computerMakeArt() {
             clrIdx = 0;
         }
     }
-    var lineWidth = 4;
+    lineWidth = RDM(1);
     for (var i = totalCircles.length - 1; i >= (totalCircles.length - 2); i--) {
         ctx.beginPath();
         posX += RDM(30);
@@ -154,40 +166,42 @@ function computerMakeArt() {
         if (posY > width) {
             posY = 0;
         }
-        ctx.lineWidth = lineWidth * 6;
+        ctx.lineWidth = lineWidth * 2;
         ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
         for (var index = 0; index < anglePoints.length - 1; index++) {
             var startX = totalCircles[i].posX + totalCircles[i].radius * Math.cos(anglePoints[index]);
             var startY = totalCircles[i].posY + totalCircles[i].radius * Math.sin(anglePoints[index]);
-            var innerX = totalCircles[i].posX + (totalCircles[i].radius / 2) * Math.cos(anglePoints[index]);
-            var innerY = totalCircles[i].posY + (totalCircles[i].radius / 2) * Math.sin(anglePoints[index]);
-            var innerX2 = totalCircles[i].posX + (totalCircles[i].radius / 4) * Math.cos(anglePoints[index]);
-            var innerY2 = totalCircles[i].posY + (totalCircles[i].radius / 4) * Math.sin(anglePoints[index]);
+            var innerX = totalCircles[i].posX + (totalCircles[i].radius * 0.75) * Math.cos(anglePoints[index]);
+            var innerY = totalCircles[i].posY + (totalCircles[i].radius * 0.75) * Math.sin(anglePoints[index]);
+            var innerX2 = totalCircles[i].posX + (totalCircles[i - 1].radius / 12) * Math.cos(anglePoints[index]);
+            var innerY2 = totalCircles[i].posY + (totalCircles[i - 1].radius / 12) * Math.sin(anglePoints[index]);
+            var innerX3 = totalCircles[i].posX + (totalCircles[i].radius * 1.5) * Math.cos(anglePoints[index]);
+            var innerY3 = totalCircles[i].posY + (totalCircles[i].radius * 1.5) * Math.sin(anglePoints[index]);
             var endX = totalCircles[i].posX + totalCircles[i].radius * Math.cos(anglePoints[index + 1]);
             var endY = totalCircles[i].posY + totalCircles[i].radius * Math.sin(anglePoints[index + 1]);
-            //ctx.ellipse(totalCircles[i].posX, totalCircles[i].posY, totalCircles[i].radius, totalCircles[i].radius, RDM(45) * Math.PI / RDM(180), 0, 2 * PI);
+            ctx.ellipse(totalCircles[i].posX, totalCircles[i].posY, totalCircles[i].radius, totalCircles[i].radius, RDM(360) * Math.PI / RDM(180), 0, 2 * PI);
             ctx.moveTo(startX, startY);
-            ctx.quadraticCurveTo(innerX, innerY, endX, endY);
-            ctx.quadraticCurveTo(innerX, innerY, innerX2, innerY2);
-            //ctx.moveTo(innerX, innerY);
-            //ctx.quadraticCurveTo(innerX2, innerY2, endX, endY);
-            //ctx.moveTo(endX, endY);
-            //ctx.quadraticCurveTo(innerX2, innerY2, startX, startY);
+            ctx.filter = "saturate(300)";
+            ctx.bezierCurveTo(innerX, innerY, innerX2, innerY2, endX, endY);
+            ctx.bezierCurveTo(innerX, innerY, innerX3, innerY3, endX, endY);
+            ctx.moveTo(innerX, innerY);
+            ctx.quadraticCurveTo(innerX2, innerY2, endX, endY);
+            ctx.moveTo(endX, endY);
+            ctx.quadraticCurveTo(innerX2, innerY2, startX, startY);
         }
         //ctx.ellipse(RDM(width), RDM(height) / 2, initialRadius += RDM(0.3), initialRadius2 += RDM(0.2), 45 * Math.PI / 180, 0, 2 * PI);
-        ctx.filter = "contrast(" + 200 + "%)";
-        ctx.stroke();
-        ctx.lineWidth = lineWidth * 5;
-        ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
-        ctx.stroke();
-        ctx.lineWidth = lineWidth * 4;
-        ctx.strokeStyle = "rgba(10, 10, 10, 0.3)";
         ctx.stroke();
         ctx.lineWidth = lineWidth * 3;
+        ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
+        ctx.stroke();
+        ctx.lineWidth = lineWidth * 5;
+        ctx.strokeStyle = "rgba(10, 10, 10, 0.3)";
+        ctx.stroke();
+        ctx.lineWidth = lineWidth * 4;
         ctx.strokeStyle = "rgba(255, 255, 250, 0.5)";
         ctx.stroke();
         ctx.fillStyle = "rgba(20, 20, 20, 0.1)";
-        ctz.fill();
+        ctx.fill();
         ctx.closePath();
     }
 }
@@ -202,8 +216,8 @@ function Circle(x, y, radius) {
         totalCircles.push(this);
     };
     this.move = function() {
-        this.posX += RDM(50);
-        this.posY += RDM(-50);
+        this.posX += RDM(250);
+        this.posY += RDM(-250);
 
     };
 }
