@@ -1,10 +1,22 @@
 // declaring my own random number function to avoid writing Math.random() * x all the time
+var pick;
 
-var RDM = function(max) {
-    var newRND = Math.random() * max;
-    return newRND;
-};
-
+function RDM(max, min) {
+    var numbers = [];
+    for (var amount = 0.5; amount <= 10; amount += 0.25) {
+        if (min) {
+            var newRDM2 = Math.random() * min / amount;
+            numbers.push(newRDM2);
+        }
+        var newRDM = Math.random() * max / amount;
+        numbers.push(newRDM);
+    }
+    numbers.sort(function(a, b) {
+        return a - b;
+    });
+    pick = numbers[Math.floor(Math.random() * numbers.length)];
+    return pick;
+}
 //declaring some mathy variables
 
 PI = Math.PI;
@@ -71,18 +83,18 @@ function reset() {
     positionY = 0;
     posX = 0;
     lineWidth = 1;
-    frameRate = 120;
+    frameRate = 10;
     runCheck();
     canvas = document.getElementById("paintSurface");
     ctx = canvas.getContext("2d");
-    ctx.canvas.height = window.innerHeight + 200;
+    ctx.canvas.height = window.innerHeight + 102.9999;
     ctx.canvas.width = window.innerWidth;
     ctx.globalAlpha = 0.6;
     //ctx.globalCompositeOperation = 'destination-over';
 }
 
 var blurAmount = 0;
-var auto = setInterval(function() { computerMakeArt(); }, 1000 / frameRate);
+var auto = setInterval(function() { computerMakeArt(); }, 1000 / (RDM(30, 3) + 3));
 var circle = new Circle(RDM(width), RDM(height), RDM(2000));
 var totalCircles = [];
 var running = false;
@@ -92,11 +104,11 @@ function runCheck() {
         clearInterval(auto);
         running = false;
     } else {
-        auto = setInterval(function() { computerMakeArt(); }, 1000 / frameRate);
+        auto = setInterval(function() { computerMakeArt(); }, 1000 / (RDM(30, 3) + 3));
         running = true;
     }
 }
-var frameRate = 60;
+var frameRate = 10;
 
 function keepTrack(max) {
     if (iterations > max) {
@@ -128,26 +140,29 @@ var iterations = 0;
 var extendAmount = 1.02;
 var lineWidth = 1;
 var allow = true;
+reset();
+
+ctx.translate(width / 2, height / 2);
 
 function computerMakeArt() {
     //keepTrack(166);
     iterations++;
-    var circle = new Circle(width / 2, height / 2, newRadius = newRadius * extendAmount);
-    var circle3 = new Circle(width / 2, height / 2, circle.radius / 2);
-    var circle4 = new Circle(width / 2, height / 2, circle3.radius / 2);
-    if (iterations % 102 === 0) {
-        newRadius = 3000;
+    var circle = new Circle(0, 0, newRadius);
+    var circle3 = new Circle(0, 0, circle.radius / 4);
+    var circle4 = new Circle(0, 0, circle3.radius / 4);
+    if (iterations % 172 === 0) {
+        newRadius = 4000;
         extendAmount = 1;
-        extendAmount *= 0.94;
+        extendAmount *= 0.999;
     }
     circle.save();
     circle3.save();
     circle4.save();
-    running = true;
     circle.move();
     circle3.move();
     circle4.move();
-    if (totalCircles.length % 2 === 0) {
+    running = true;
+    if (iterations % 1 === 0) {
         randomizer();
         if (clrIdx === 0) {
             clrIdx = 1;
@@ -155,7 +170,8 @@ function computerMakeArt() {
             clrIdx = 0;
         }
     }
-    lineWidth = RDM(1);
+    lineWidth = RDM(0.7, 60);
+    ctx.canvas.style.filter = "contrast(160%)";
     for (var i = totalCircles.length - 1; i >= (totalCircles.length - 2); i--) {
         ctx.beginPath();
         posX += RDM(30);
@@ -173,21 +189,23 @@ function computerMakeArt() {
             var startY = totalCircles[i].posY + totalCircles[i].radius * Math.sin(anglePoints[index]);
             var innerX = totalCircles[i].posX + (totalCircles[i].radius * 0.75) * Math.cos(anglePoints[index]);
             var innerY = totalCircles[i].posY + (totalCircles[i].radius * 0.75) * Math.sin(anglePoints[index]);
-            var innerX2 = totalCircles[i].posX + (totalCircles[i - 1].radius / 12) * Math.cos(anglePoints[index]);
-            var innerY2 = totalCircles[i].posY + (totalCircles[i - 1].radius / 12) * Math.sin(anglePoints[index]);
+            var innerX2 = totalCircles[i].posX + (totalCircles[i - 1].radius / 6) * Math.cos(anglePoints[index]);
+            var innerY2 = totalCircles[i].posY + (totalCircles[i - 1].radius / 6) * Math.sin(anglePoints[index]);
             var innerX3 = totalCircles[i].posX + (totalCircles[i].radius * 1.5) * Math.cos(anglePoints[index]);
             var innerY3 = totalCircles[i].posY + (totalCircles[i].radius * 1.5) * Math.sin(anglePoints[index]);
             var endX = totalCircles[i].posX + totalCircles[i].radius * Math.cos(anglePoints[index + 1]);
             var endY = totalCircles[i].posY + totalCircles[i].radius * Math.sin(anglePoints[index + 1]);
-            ctx.ellipse(totalCircles[i].posX, totalCircles[i].posY, totalCircles[i].radius, totalCircles[i].radius, RDM(360) * Math.PI / RDM(180), 0, 2 * PI);
+            //ctx.ellipse(totalCircles[i].posX, totalCircles[i].posY, totalCircles[i].radius, totalCircles[i].radius, RDM(360) * Math.PI / RDM(180), 0, 2 * PI);
             ctx.moveTo(startX, startY);
-            ctx.filter = "saturate(300)";
+            ctx.filter = "blur(" + RDM(0, 30) + ")";
             ctx.bezierCurveTo(innerX, innerY, innerX2, innerY2, endX, endY);
             ctx.bezierCurveTo(innerX, innerY, innerX3, innerY3, endX, endY);
+            ctx.bezierCurveTo(RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height));
             ctx.moveTo(innerX, innerY);
-            ctx.quadraticCurveTo(innerX2, innerY2, endX, endY);
-            ctx.moveTo(endX, endY);
-            ctx.quadraticCurveTo(innerX2, innerY2, startX, startY);
+            ctx.bezierCurveTo(RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height));
+            //ctx.quadraticCurveTo(innerX2, innerY2, endX, endY);
+            //ctx.moveTo(endX, endY);
+            //ctx.quadraticCurveTo(innerX2, innerY2, startX, startY);
         }
         //ctx.ellipse(RDM(width), RDM(height) / 2, initialRadius += RDM(0.3), initialRadius2 += RDM(0.2), 45 * Math.PI / 180, 0, 2 * PI);
         ctx.stroke();
@@ -198,7 +216,7 @@ function computerMakeArt() {
         ctx.strokeStyle = "rgba(10, 10, 10, 0.3)";
         ctx.stroke();
         ctx.lineWidth = lineWidth * 4;
-        ctx.strokeStyle = "rgba(255, 255, 250, 0.5)";
+        ctx.strokeStyle = "rgba(255, 255, 250, 0.4)";
         ctx.stroke();
         ctx.fillStyle = "rgba(20, 20, 20, 0.1)";
         ctx.fill();
@@ -216,8 +234,8 @@ function Circle(x, y, radius) {
         totalCircles.push(this);
     };
     this.move = function() {
-        this.posX += RDM(250);
-        this.posY += RDM(-250);
+        this.posX += RDM(-width / 2, width / 2);
+        this.posY += RDM(-height / 2, height / 2);
 
     };
 }

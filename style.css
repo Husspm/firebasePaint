@@ -55,38 +55,10 @@ label:nth-child(7) {
     cursor: pointer;
 }
 
-.topLayer {
-    text-align: center;
-    color: black;
-    position: absolute;
-    z-index: 10;
-    background-size: 200px;
-    width: 803.2px;
-    height: 703.2px;
-    opacity: 1;
-    background: url(warpedCB.png);
-    background-size: 50px 50px;
-}
-
-#paintSurface {
-    border: 2px solid rgb( 50, 50, 50);
-    background: url(warpedCB.png);
-    background-size: 50px 50px;
-}
-
 select {
     color: black;
 }
 
-.wrapper {
-    position: fixed;
-    height: 100%;
-    width: 100%;
-    z-index: 10;
-    background: url(warpedCB.png);
-    background-size: 50px 50px;
-}
-
-img {
-    filter: contrast(100%);
+#paintSurface {
+    filter: saturate(10);
 }
