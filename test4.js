@@ -150,6 +150,7 @@ function computerMakeArt() {
     var circle = new Circle(0, 0, newRadius);
     var circle3 = new Circle(0, 0, circle.radius / 4);
     var circle4 = new Circle(0, 0, circle3.radius / 4);
+    newRadius = RDM(width, height);
     if (iterations % 172 === 0) {
         newRadius = 4000;
         extendAmount = 1;
@@ -170,8 +171,8 @@ function computerMakeArt() {
             clrIdx = 0;
         }
     }
-    lineWidth = RDM(0.7, 60);
-    ctx.canvas.style.filter = "contrast(160%)";
+    lineWidth = RDM(0.7, 9);
+    ctx.canvas.style.filter = "saturate(160%)";
     for (var i = totalCircles.length - 1; i >= (totalCircles.length - 2); i--) {
         ctx.beginPath();
         posX += RDM(30);
@@ -197,15 +198,15 @@ function computerMakeArt() {
             var endY = totalCircles[i].posY + totalCircles[i].radius * Math.sin(anglePoints[index + 1]);
             //ctx.ellipse(totalCircles[i].posX, totalCircles[i].posY, totalCircles[i].radius, totalCircles[i].radius, RDM(360) * Math.PI / RDM(180), 0, 2 * PI);
             ctx.moveTo(startX, startY);
-            ctx.filter = "blur(" + RDM(0, 30) + ")";
+            ctx.filter = "blur(" + RDM(0, 30) + "px)";
             ctx.bezierCurveTo(innerX, innerY, innerX2, innerY2, endX, endY);
             ctx.bezierCurveTo(innerX, innerY, innerX3, innerY3, endX, endY);
             ctx.bezierCurveTo(RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height));
             ctx.moveTo(innerX, innerY);
             ctx.bezierCurveTo(RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height), RDM(width, -width), RDM(height, -height));
-            //ctx.quadraticCurveTo(innerX2, innerY2, endX, endY);
-            //ctx.moveTo(endX, endY);
-            //ctx.quadraticCurveTo(innerX2, innerY2, startX, startY);
+            ctx.quadraticCurveTo(innerX2, innerY2, endX, endY);
+            ctx.moveTo(endX, endY);
+            ctx.quadraticCurveTo(innerX2, innerY2, startX, startY);
         }
         //ctx.ellipse(RDM(width), RDM(height) / 2, initialRadius += RDM(0.3), initialRadius2 += RDM(0.2), 45 * Math.PI / 180, 0, 2 * PI);
         ctx.stroke();
@@ -213,10 +214,10 @@ function computerMakeArt() {
         ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
         ctx.stroke();
         ctx.lineWidth = lineWidth * 5;
-        ctx.strokeStyle = "rgba(10, 10, 10, 0.3)";
+        ctx.strokeStyle = "rgba(10, 10, 10, 0.1)";
         ctx.stroke();
         ctx.lineWidth = lineWidth * 4;
-        ctx.strokeStyle = "rgba(255, 255, 250, 0.4)";
+        ctx.strokeStyle = "rgba(255, 255, 250, 0.2)";
         ctx.stroke();
         ctx.fillStyle = "rgba(20, 20, 20, 0.1)";
         ctx.fill();

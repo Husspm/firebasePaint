@@ -144,17 +144,26 @@ function changeRoutine(changer) {
     }
 }
 var auto = setInterval(function() { computerMakeArt(); }, 1000 / 120);
+var gridAmount = 50;
+var xPoints = [];
+var yPoints = [];
+for (var x1 = 0; x1 <= width; x1 += gridAmount) {
+    xPoints.push(x1);
+}
+for (var y1 = 0; y1 <= height; y1 += gridAmount) {
+    yPoints.push(y1);
+}
+
+var Xindex = 0;
+var Yindex = 0;
 
 function computerMakeArt() {
     //keepTrack(166);
-    var gridAmount = RDM(80, 140) + 50;
-    var xPoints = [];
-    var yPoints = [];
-    for (var x1 = 0; x1 <= width; x1 += gridAmount) {
-        xPoints.push(x1);
+    if (Xindex >= xPoints.length) {
+        Xindex = 0;
     }
-    for (var y1 = 0; y1 <= height; y1 += gridAmount) {
-        yPoints.push(y1);
+    if (Yindex >= yPoints.length) {
+        Yindex = 0;
     }
     iterations++;
     running = true;
@@ -166,26 +175,18 @@ function computerMakeArt() {
             clrIdx = 0;
         }
     }
-    for (var y = 0; y <= yPoints.length - 1; y++) {
-        for (var x = 0; x <= xPoints.length - 1; x++) {
-            ctx.beginPath();
-            ctx.lineJoin = "round";
-            ctx.moveTo(xPoints[x], yPoints[y]);
-            ctx.lineWidth = RDM(28, 0.6);
-            ctx.lineTo(xPoints[x + 1] * RDM(1, 3), yPoints[y] * RDM(40, 2000));
-            ctx.lineTo(xPoints[x], yPoints[y + 1]);
-            ctx.lineTo(xPoints[x] + 1, yPoints[y] + 1);
-            ctx.lineTo(xPoints[x + 1], yPoints[y]);
-            ctx.lineTo(xPoints[x] + 2, yPoints[y]);
-            ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
-            ctx.stroke();
-            ctx.lineWidth = RDM(42, 0.8);
-            ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
-            ctx.stroke();
-        }
-        ctx.lineWidth = RDM(56, 0.8);
-        ctx.lineTo(xPoints[y + 1], yPoints[y]);
-        ctx.strokeStyle = "rgba(" + RDM(244) + RDM(233) + RDM(233) + "0.5)";
-        ctx.stroke();
-    }
+    ctx.beginPath();
+    ctx.lineJoin = "round";
+    ctx.moveTo(xPoints[Xindex += 3], yPoints[Yindex += 2]);
+    ctx.lineWidth = RDM(28, 0.6);
+    ctx.quadraticCurveTo(xPoints[Math.floor(RDM(xPoints.length))], yPoints[Math.floor(RDM(yPoints.length))], RDM(width, height), RDM(width, height));
+    ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
+    ctx.stroke();
+    ctx.lineWidth = RDM(42, 0.8);
+    ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
+    ctx.stroke();
+    ctx.lineWidth = RDM(56, 0.8);
+    ctx.strokeStyle = "rgba(" + RDM(244) + RDM(233) + RDM(233) + "0.5)";
+    ctx.stroke();
+    ctx.closePath();
 }

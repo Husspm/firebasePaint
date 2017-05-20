@@ -60,5 +60,5 @@ select {
 }
 
 #paintSurface {
-    filter: saturate(10);
+    filter: contrast(400%);
 }
