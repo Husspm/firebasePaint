@@ -93,17 +93,30 @@ var mic;
 function setup() {
     mic = new p5.AudioIn();
     mic.start();
-    frameRate = 240;
 }
+var brightnessAmount = 100;
 
 function draw() {
     micLevel = mic.getLevel();
-    if (micLevel > 0.1) {
+    if (micLevel > 0.005) {
+        blurAmount = 0;
+        brightnessAmount = 100;
         computerMakeArt();
+    } else {
+        blurAmount += 0.5;
+        brightnessAmount *= 1.1;
+        ctx.canvas.style.filter = "blur(" + blurAmount + "px)";
+        $("#canvasImg").css("filter", "blur(" + blurAmount + "px) saturate(" + brightnessAmount + "%)");
     }
 }
 
+var photoArray = ["bgLayer", "bgLayerv2", "bgLayerv3", "GasMask", "GasMask2", "main logo", "test18v2",
+    "test40v1", "test40v2", "test40v3", "test40v4", "test40v5"
+];
+
 function computerMakeArt() {
+    $("#canvasImg").attr("src", "./images/" + photoArray[Math.floor(RDM(photoArray.length))] + ".png");
+    $("#canvasImg").css("opacity", RDM(1));
     iterations++;
     if (iterations % 250 === 0) {
         makePoints();
@@ -181,11 +194,12 @@ function computerMakeArt() {
     ctx.strokeStyle = "rgba(0, 0, 0, 0.6 )";
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(-width, -height);
+    ctx.filter = "blur(" + RDM(30) + "px)";
+    ctx.lineJoin = "round";
+    ctx.moveTo(1500, random(-1000, 1000));
+    ctx.quadraticCurveTo(random(-1500, 1500), random(-1500, 1500), circle.x, circle.y);
+    lineWidth = random(1, 50);
     ctx.lineCap = "round";
-    ctx.filter = "blur(" + RDM(50) + "px)";
-    ctx.bezierCurveTo(RDM(width) / 2, RDM(height) / 2, RDM(-width), RDM(-height), circle.x, circle.y);
-    lineWidth = RDM(54);
     ctx.lineWidth = lineWidth * 4;
     ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
     ctx.stroke();
@@ -193,20 +207,32 @@ function computerMakeArt() {
     ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
     ctx.stroke();
     ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = "rgba(205,255,255,0.7)";
+    ctx.strokeStyle = "black";
     ctx.stroke();
     ctx.lineWidth = lineWidth * 0.5;
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.6 )";
+    ctx.fillStyle = "rgba(255,255,255, 0.3)";
+    ctx.fill();
+    ctx.moveTo(circle.x, circle.y);
+    ctx.quadraticCurveTo(random(-1600, 1600), random(-1600, 1600), -1500, random(-1000, 1000));
+    lineWidth = random(2, 60);
+    ctx.lineCap = "round";
+    ctx.lineWidth = lineWidth * 4;
+    ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
     ctx.stroke();
+    ctx.lineWidth = lineWidth * 2;
+    ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
+    ctx.stroke();
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = "black";
+    ctx.stroke();
+    ctx.lineWidth = lineWidth * 0.5;
+    ctx.fillStyle = "rgba(255,255,255, 0.3)";
+    ctx.fill();
     ctx.beginPath();
-    ctx.filter = "saturate(300%)";
-    var newAngle = Math.floor(RDM(anglePoints.length));
-    var newX = circle.x + circle.radius * Math.sin(anglePoints[newAngle]);
-    var newY = circle.y + circle.radius * Math.cos(anglePoints[newAngle]);
-    ctx.moveTo(newX, newY);
+    ctx.moveTo(circle.x, circle.y);
+    ctx.quadraticCurveTo(random(-1600, 1600), random(-1600, 1600), random(-1600, 1600), -1000);
+    lineWidth = random(2, 60);
     ctx.lineCap = "round";
-    ctx.bezierCurveTo(RDM(-width) / 2, RDM(-height) / 2, RDM(width) / 2, RDM(height) / 2, -width / 2, height / 2);
-    lineWidth = RDM(24);
     ctx.lineWidth = lineWidth * 4;
     ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
     ctx.stroke();
@@ -214,16 +240,15 @@ function computerMakeArt() {
     ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
     ctx.stroke();
     ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = "rgba(205,255,255,0.7)";
+    ctx.strokeStyle = "black";
     ctx.stroke();
     ctx.lineWidth = lineWidth * 0.5;
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.6 )";
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.moveTo(newX, newY);
+    ctx.fillStyle = "rgba(255,255,255, 0.3)";
+    ctx.fill();
+    ctx.moveTo(circle.x, circle.y);
+    ctx.quadraticCurveTo(random(-1600, 1600), random(-1600, 1600), random(-1600, 1600), 1000);
+    lineWidth = random(2, 60);
     ctx.lineCap = "round";
-    ctx.bezierCurveTo(RDM(width) / 2, RDM(height) / 2, RDM(-width) / 2, RDM(-height), width / 2, RDM(-height) / 2);
-    lineWidth = RDM(12);
     ctx.lineWidth = lineWidth * 4;
     ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
     ctx.stroke();
@@ -231,31 +256,11 @@ function computerMakeArt() {
     ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
     ctx.stroke();
     ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = "rgba(205,255,255,0.7)";
+    ctx.strokeStyle = "black";
     ctx.stroke();
     ctx.lineWidth = lineWidth * 0.5;
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.6 )";
-    ctx.stroke();
-    ctx.beginPath();
-    var newAngle2 = Math.floor(RDM(anglePoints.length));
-    var newX2 = circle.x + circle.radius * Math.sin(anglePoints[newAngle2]);
-    var newY2 = circle.y + circle.radius * Math.cos(anglePoints[newAngle2]);
-    ctx.moveTo(newX2, newY2);
-    ctx.lineCap = "round";
-    ctx.bezierCurveTo(RDM(-width) / 2, RDM(-height) / 2, RDM(-width) / 2, RDM(-height), width / 2, RDM(height) / 2);
-    lineWidth = RDM(32);
-    ctx.lineWidth = lineWidth * 4;
-    ctx.strokeStyle = colors[1].mode + colors[1].red + colors[1].green + colors[1].blue + colors[1].alpha;
-    ctx.stroke();
-    ctx.lineWidth = lineWidth * 2;
-    ctx.strokeStyle = colors[0].mode + colors[0].red + colors[0].green + colors[0].blue + colors[0].alpha;
-    ctx.stroke();
-    ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = "rgba(25,255,25,0.7)";
-    ctx.stroke();
-    ctx.lineWidth = lineWidth * 0.5;
-    ctx.strokeStyle = "rgba(60, 60, 60, 0.6 )";
-    ctx.stroke();
+    ctx.fillStyle = "rgba(255,255,255, 0.3)";
+    ctx.fill();
     ctx.closePath();
 }
 
@@ -269,6 +274,7 @@ function reset() {
     newRadius = 10;
     width = window.innerWidth;
     height = window.innerHeight;
+    $("#canvasImg").css({ "width": width, "height": height });
     positionX = 0;
     positionY = 0;
     x = 0;
@@ -279,6 +285,6 @@ function reset() {
     ctx.canvas.height = height;
     ctx.canvas.width = width;
     ctx.translate(width / 2, height / 2);
-    runCheck();
+    //runCheck();
 }
 reset();

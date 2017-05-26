@@ -61,4 +61,16 @@ select {
 
 #paintSurface {
     filter: contrast(400%);
+    position: absolute;
+    z-index: 0;
+}
+
+#canvasImg {
+    position: absolute;
+    z-index: 1;
+}
+
+#canvasImg2 {
+    position: absolute;
+    z-index: 2;
 }
