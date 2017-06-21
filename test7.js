@@ -1,4 +1,5 @@
-// declaring my own random number function to avoid writing Math.random() * x all the time
+// declaring my own random number function to avoid writing Math.random() * x
+// all the time
 
 function RDM(max) {
     var newRDM = max * Math.random();
@@ -8,17 +9,28 @@ function RDM(max) {
 PI = Math.PI;
 
 var colors = [
-    { mode: "rgba(", red: "250,", green: "0,", blue: "0,", alpha: "0.8)" },
-    { mode: "rgba(", red: "20,", green: "20,", blue: "20,", alpha: "0.8)" }
+    {
+        mode: "rgba(",
+        red: "250,",
+        green: "0,",
+        blue: "0,",
+        alpha: "0.8)"
+    }, {
+        mode: "rgba(",
+        red: "20,",
+        green: "20,",
+        blue: "20,",
+        alpha: "0.8)"
+    }
 ];
 
 var clrIdx = 0;
 var clrTarget = ["border-color", "background-color"];
-$("select").change(function() {
+$("select").change(function () {
     clrIdx = this.value;
 });
 //slider controls for custom colors
-$("input[type='range']").on("input", function() {
+$("input[type='range']").on("input", function () {
     if (this.id === "alpha") {
         //colors[clrIdx][this.id] = this.value + ")";
     } else if (this.id === "pixelate") {
@@ -29,12 +41,12 @@ $("input[type='range']").on("input", function() {
     //dipslays current color in preview window
     $("#colorPreview").css(clrTarget[clrIdx], colors[clrIdx].mode + colors[clrIdx].red + colors[clrIdx].green + colors[clrIdx].blue + colors[clrIdx].alpha);
 }); //ends slider function
-//randomizer generates random colors. ! might need to reuse later too, ...later... turns out I did 
+//randomizer generates random colors. ! might need to reuse later too, ...later... turns out I did
 $("#randomize").click(randomizer);
 
 function randomizer() {
     for (var key in colors[clrIdx]) {
-        if (key !== "mode")
+        if (key !== "mode") 
             colors[clrIdx][key] = Math.floor(RDM(256)) - 70 + ",";
         if (key === "alpha") {
             newNumber = RDM(1) + 0.4;
@@ -59,15 +71,11 @@ function keepTrack(max) {
         clearInterval(auto);
         runCheck();
         reset();
-        // save canvas image as data url (png format by default)
         var dataURL = canvas.toDataURL();
-
-        // set canvasImg image src to dataURL
-        // so it can be saved as an image
-        document.getElementById('canvasImg').src = dataURL;
-
+        document
+            .getElementById('canvasImg')
+            .src = dataURL;
     }
-
 }
 var anglePoints = [];
 var totalCircles = [];
@@ -106,12 +114,24 @@ function draw() {
         blurAmount += 0.5;
         brightnessAmount *= 1.1;
         ctx.canvas.style.filter = "blur(" + blurAmount + "px)";
-        $("#canvasImg").css("filter", "blur(" + blurAmount + "px) saturate(" + brightnessAmount + "%)");
+        // $("#canvasImg").css("filter", "blur(" + blurAmount + "px) saturate(" +
+        // brightnessAmount + "%)");
     }
 }
 
-var photoArray = ["bgLayer", "bgLayerv2", "bgLayerv3", "GasMask", "GasMask2", "main logo", "test18v2",
-    "test40v1", "test40v2", "test40v3", "test40v4", "test40v5"
+var photoArray = [
+    "bgLayer",
+    "bgLayerv2",
+    "bgLayerv3",
+    "GasMask",
+    "GasMask2",
+    "main logo",
+    "test18v2",
+    "test40v1",
+    "test40v2",
+    "test40v3",
+    "test40v4",
+    "test40v5"
 ];
 
 function computerMakeArt() {
@@ -274,7 +294,7 @@ function reset() {
     newRadius = 10;
     width = window.innerWidth;
     height = window.innerHeight;
-    $("#canvasImg").css({ "width": width, "height": height });
+    $("#canvasImg").css({"width": width, "height": height});
     positionX = 0;
     positionY = 0;
     x = 0;
