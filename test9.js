@@ -4,14 +4,6 @@ var w = window.innerWidth,
     xGrid = [],
     yGrid = [];
 
-function makeArray() {
-    for (let num = 1; num <= 64; num += 1) {
-        let photo = "image" + num;
-        photoArray.push(photo);
-        console.log(photoArray);
-    }
-}
-
 function makeGrid() {
     for (let num = 0; num <= w; num += 10) {
         xGrid.push(num);
@@ -20,7 +12,7 @@ function makeGrid() {
         yGrid.push(num);
     }
 }
-makeArray();
+
 makeGrid();
 
 function setup() {
@@ -38,8 +30,8 @@ var xIterations = 0,
 function draw() {
     printIterations++;
     keepTrack(3900);
-    xIterations += random(0.2, 29.5);
-    yIterations += random(0.2, 28.9);
+    xIterations += random(0.2, 0.5);
+    yIterations += random(0.2, 1.9);
     if (xIterations >= w) {
         xIterations = 0;
     }
@@ -48,7 +40,7 @@ function draw() {
         yIterations = 0;
     }
     push();
-    var sWgt = random(0, 5);
+    var sWgt = random(0, 0.7);
     strokeWeight(sWgt);
     var radius = random(20, 860);
     var radius2 = random(29, 860);

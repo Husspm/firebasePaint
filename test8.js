@@ -1,5 +1,5 @@
-var w = window.innerWidth,
-    h = window.innerHeight,
+var w = window.innerWidth - 9.5,
+    h = window.innerHeight - 9.5,
     photoArray = [];
 
 function makeArray() {
@@ -12,14 +12,14 @@ function makeArray() {
 makeArray();
 
 function setup() {
-    createCanvas(w, h - 6.5);
-    frameRate(120);
+    createCanvas(w - 16.5 , h - 16.5);
+    frameRate(60);
     amount = 0;
-    $("#canvasImg").css({"width": w, "height": h});
-    $("#canvasImg2").css({"width": w, "height": h});
+    $("#canvasImg").css({"width": w - 16.5, "height": h - 16.5});
+    $("#canvasImg2").css({"width": w - 16.5, "height": h - 16.5});
     mic = new p5.AudioIn();
     mic.start();
-    noLoop();
+    //noLoop();
 }
 var xOff = 0;
 
@@ -32,7 +32,7 @@ var auto = setInterval(function () {
 function listen() {
     micLevel = mic.getLevel();
     if (micLevel < 0.095) {
-        noLoop();
+        //noLoop();
         amount += 0.2;
         if (amount > 50) {
             amount += 0.05;
@@ -41,16 +41,16 @@ function listen() {
         $("#canvasImg2").css("filter", "blur(" + amount + "px) contrast(" + amount * 5 + ")");
     } else {
         amount = 0;
-        loop();
+        //loop();
     }
 }
 
 function draw() {
     iterations++;
     $("#canvasImg").attr("src", "./images/" + photoArray[Math.floor(random(photoArray.length))]);
-    $("#canvasImg").css("opacity", random(0.2, 0.8));
+    $("#canvasImg").css("opacity", random(0.2, 0.5));
     $("#canvasImg2").attr("src", "./images/" + photoArray[Math.floor(random(photoArray.length))]);
-    $("#canvasImg2").css("opacity", random(0.2, 0.8));
+    $("#canvasImg2").css("opacity", random(0.2, 0.5));
     strokeWeight(random(0, 3));
     triangle(random(0, w), random(0, h), random(0, w), random(0, h), random(0, w), random(0, h));
     ellipse(random(0, w), random(0, h), 200, random(0, w));

@@ -135,8 +135,9 @@ var photoArray = [
 ];
 
 function computerMakeArt() {
-    $("#canvasImg").attr("src", "./images/" + photoArray[Math.floor(RDM(photoArray.length))] + ".png");
-    $("#canvasImg").css("opacity", RDM(1));
+    // $("#canvasImg").attr("src", "./images/" +
+    // photoArray[Math.floor(RDM(photoArray.length))] + ".png");
+    // $("#canvasImg").css("opacity", RDM(1));
     iterations++;
     if (iterations % 250 === 0) {
         makePoints();
