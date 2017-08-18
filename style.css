@@ -46,3 +46,7 @@ select {
     position: absolute;
     z-index: 2;
 }
+
+#defaultCanvas0 {
+    filter: contrast(1);
+}
