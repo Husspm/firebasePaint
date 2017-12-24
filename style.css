@@ -47,6 +47,17 @@ select {
     z-index: 2;
 }
 
+#canvasImg3 {
+    position: absolute;
+    z-index: 2;
+}
+
 #defaultCanvas0 {
-    filter: contrast(1);
+    filter: contrast(300%);
+}
+
+video {
+    position: absolute;
+    z-index: 5;
+    opacity: 0.8;
 }

@@ -19,13 +19,6 @@ function setup() {
     }
 }
 
-function touchMoved() {
-    strokeWeight(10);
-    stroke(20, 170);
-    fill(200, 200);
-    ellipse(mouseX, mouseY, 60, 50);
-    return false;
-}
 var notes = [{
         note: [48, 50, 52, 54, 55, 57, 59],
         points: { x: [], y: [] }
@@ -36,7 +29,7 @@ var notes = [{
     }
 ];
 var noteLength = ['12n', '8n'];
-var reverb = new Tone.JCReverb(0.55);
+var reverb = new Tone.JCReverb(0.85);
 var synth = new Tone.Synth({
     oscialltor: {
         type: 'sine'
